@@ -1,4 +1,4 @@
-# 🚗 ParHK - Otopark Takip Sistemi
+# 🚗 ParkHK - Otopark Takip Sistemi
 
 ParkHK, kullanıcıların otopark randevularını yönetebileceği, araç giriş-çıkış durumlarını (bekliyor, içerde, tamamlandı) takip edebileceği ve abonelik süreçlerini yönetebileceği modern bir web tabanlı otopark yönetim sistemidir.
 
