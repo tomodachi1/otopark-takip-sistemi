@@ -1,6 +1,6 @@
-# 🚗 ParkMaster - Otopark Takip Sistemi
+# 🚗 ParHK - Otopark Takip Sistemi
 
-ParkMaster, kullanıcıların otopark randevularını yönetebileceği, araç giriş-çıkış durumlarını (bekliyor, içerde, tamamlandı) takip edebileceği ve abonelik süreçlerini yönetebileceği modern bir web tabanlı otopark yönetim sistemidir.
+ParkHK, kullanıcıların otopark randevularını yönetebileceği, araç giriş-çıkış durumlarını (bekliyor, içerde, tamamlandı) takip edebileceği ve abonelik süreçlerini yönetebileceği modern bir web tabanlı otopark yönetim sistemidir.
 
 ---
 
