@@ -38,6 +38,7 @@ if ($isAdmin) {
     $today_records = $db->query("SELECT COUNT(*) FROM parking_records WHERE appointment_date = CURDATE()")->fetchColumn();
     $inside_vehicles = $db->query("SELECT COUNT(*) FROM parking_records WHERE status = 'içerde'")->fetchColumn();
     
+    // VIP Olmayanlardan gelen Toplam ve Günlük kazanç
     $total_revenue = $db->query("SELECT SUM(p.fee) FROM parking_records p 
                                  LEFT JOIN subscriptions s ON p.plate_number = s.plate_number AND s.end_date >= CURDATE()
                                  WHERE s.id IS NULL")->fetchColumn() ?? 0;
@@ -289,25 +290,25 @@ $records = $stmt->fetchAll();
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h2 class="page-title mb-0 fw-bold"><i class="fa-solid fa-square-parking me-2 text-danger"></i>ParkMaster</h2>
+                <h2 class="page-title mb-0 fw-bold"><i class="fa-solid fa-square-parking me-2 text-danger"></i>Park<span style="color: #b91c1c;">HK</span></h2>
                 <span class="text-muted uppercase" style="font-size: 10px; letter-spacing: 1px; color: #94a3b8 !important;">OTOPARK KONTROL MERKEZİ</span>
             </div>
+    
             <div class="d-flex gap-2 align-items-center">
                 <?php if ($isAdmin): ?>
                     <a href="abone_ol.php" class="btn btn-premium-red fw-semibold shadow-sm px-3 py-2 btn-modern"><i class="fa-solid fa-crown me-1"></i> Abonelik Modülü</a>
                 <?php else: ?>
-                    <a href="abone_ol.php" class="btn btn-outline-danger fw-semibold shadow-sm px-3 py-2 btn-modern"><i class="fa-solid fa-star me-1"></i> Abone Ol</a>
+                   
+  <a href="abone_ol.php" class="btn btn-outline-danger fw-semibold shadow-sm px-3 py-2 btn-modern"><i class="fa-solid fa-star me-1"></i> Abone Ol</a>
                 <?php endif; ?>
                 
                 <a href="ekle.php" class="btn btn-light fw-bold px-3 py-2 border btn-modern"><i class="fa-solid fa-plus me-1 text-danger"></i> Yeni Randevu</a>
                 
-                <!-- PROFİL BUTONU: Seçilen harika ikon anında burada değişiyor! -->
                 <a href="profil.php" class="btn fw-semibold px-3 py-2 btn-modern text-white d-flex align-items-center gap-1" style="background: #272c35;">
                     <i class="fa-solid <?= htmlspecialchars($current_avatar) ?> me-1 text-danger"></i> <?= htmlspecialchars($user_info['username'] ?? $_SESSION['username'] ?? 'Kullanıcı') ?>
                 </a>
                 
-                <!-- YENİ PREMIUM ÇIKIŞ YAP BUTONU: Koyu gri arka planın içinde parlayan kırmızı renkte ve çok belirgin -->
-                <a href="cikis.php" class="btn d-flex align-items-center justify-content-center shadow-sm text-white" 
+                 <a href="cikis.php" class="btn d-flex align-items-center justify-content-center shadow-sm text-white" 
                    style="background: #b91c1c; border-radius: 8px; width: 40px; height: 38px; transition: all 0.2s;"
                    onmouseover="this.style.background='#991b1b'; this.style.transform='scale(1.05)';" 
                    onmouseout="this.style.background='#b91c1c'; this.style.transform='scale(1)';"
@@ -342,12 +343,13 @@ $records = $stmt->fetchAll();
                 </div>
             </div>
         </div>
-        <div class="col">
+    
+    <div class="col">
             <div class="card stat-card">
                 <div class="card-body">
                     <div class="stat-icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
                     <div class="stat-label">İçerdeki Araçlar</div>
-                    <div class="stat-value"><?= $inside_vehicles ?></div>
+                     <div class="stat-value"><?= $inside_vehicles ?></div>
                 </div>
             </div>
         </div>
@@ -361,21 +363,23 @@ $records = $stmt->fetchAll();
                         </div>
                         <button type="button" class="btn btn-link text-muted p-0 toggle-revenue-btn" onclick="toggleRevenueVisibility()"><i class="fa-regular fa-eye"></i></button>
                     </div>
-                    <div class="stat-value revenue-value" style="color: #b91c1c;" data-value="<?= number_format($today_revenue, 2) ?> TL">*** TL</div>
+                    <div class="stat-value revenue-value" style="color: #b91c1c;"
+                         data-value="<?= number_format($today_revenue, 2) ?> TL">*** TL</div>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="card stat-card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
+                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <div class="stat-icon icon-dark-style"><i class="fa-solid fa-coins text-danger"></i></div>
                             <div class="stat-label">Toplam Gelir</div>
                         </div>
                         <button type="button" class="btn btn-link text-muted p-0 toggle-revenue-btn" onclick="toggleRevenueVisibility()"><i class="fa-regular fa-eye"></i></button>
                     </div>
-                    <div class="stat-value revenue-value" style="color: #b91c1c;" data-value="<?= number_format($total_revenue, 2) ?> TL">*** TL</div>
+                    <div class="stat-value revenue-value" style="color: #b91c1c;"
+                         data-value="<?= number_format($total_revenue, 2) ?> TL">*** TL</div>
                 </div>
             </div>
         </div>
@@ -389,7 +393,8 @@ $records = $stmt->fetchAll();
             <div class="col-md-5">
                 <div class="input-group">
                     <span class="input-group-text bg-transparent border-secondary text-muted" style="border-radius: 8px 0 0 8px;"><i class="fa-solid fa-magnifying-glass text-danger"></i></span>
-                    <input type="text" name="search" class="form-control form-control-modern border-start-0" style="border-radius: 0 8px 8px 0;" placeholder="Plaka girip süzün..." value="<?= htmlspecialchars($search) ?>">
+                    <input type="text" name="search" class="form-control form-control-modern border-start-0" style="border-radius: 0 8px 8px 0;"
+                           placeholder="Plaka girip süzün..." value="<?= htmlspecialchars($search) ?>">
                 </div>
             </div>
             <div class="col-md-4">
@@ -403,13 +408,14 @@ $records = $stmt->fetchAll();
             <div class="col-md-3 d-flex gap-2">
                 <button type="submit" class="btn btn-premium-red btn-modern w-100">Sorgula</button>
                 <a href="index.php" class="btn btn-outline-light btn-modern text-nowrap" style="border-color: #3f4754;">Sıfırla</a>
-            </div>
+             </div>
         </form>
     </div>
 
     <div class="card custom-card">
         
-        <div class="card-header bg-dark p-4 d-flex justify-content-between align-items-center" style="cursor: pointer; background: #1e2229 !important;" data-bs-toggle="collapse" data-bs-target="#aracListeCollapse" aria-expanded="true" aria-controls="aracListeCollapse">
+        <div class="card-header bg-dark p-4 d-flex justify-content-between align-items-center" style="cursor: pointer; background: #1e2229 !important;"
+             data-bs-toggle="collapse" data-bs-target="#aracListeCollapse" aria-expanded="true" aria-controls="aracListeCollapse">
             <h5 class="mb-0 fw-bold text-white">
                 <i class="fa-solid fa-list me-2 text-danger"></i><?= $isAdmin ? 'Tüm Araç Kayıt Listesi' : 'Benim Randevularım' ?>
                 <?php if(!empty($secilen_tarih)): ?>
@@ -428,11 +434,12 @@ $records = $stmt->fetchAll();
 
                     <div class="col-md-3">
                         <label class="form-label small fw-bold text-secondary mb-1">Tarihe Göre Süz</label>
-                        <input type="date" name="filtre_tarih" class="form-control form-control-sm" style="border-radius: 6px; border: 1px solid #cbd5e1;" value="<?= htmlspecialchars($secilen_tarih) ?>">
+                        <input type="date" name="filtre_tarih" class="form-control form-control-sm" style="border-radius: 6px; border: 1px solid #cbd5e1;"
+                               value="<?= htmlspecialchars($secilen_tarih) ?>">
                     </div>
                     <div class="col-md-4 d-flex gap-2">
                         <button type="submit" class="btn btn-sm btn-dark px-3 fw-semibold" style="border-radius: 6px; background: #1e2229;"><i class="fa-solid fa-filter me-1 text-danger"></i> Filtrele</button>
-                        <?php if(!empty($secilen_tarih)): ?>
+                         <?php if(!empty($secilen_tarih)): ?>
                             <a href="index.php" class="btn btn-sm btn-outline-secondary px-2" style="border-radius: 6px;"><i class="fa-solid fa-rotate-left"></i> Kaldır</a>
                         <?php endif; ?>
                     </div>
@@ -440,76 +447,79 @@ $records = $stmt->fetchAll();
 
                 <div class="table-responsive">
                     <table class="table table-hover mb-0 table-theme">
-                        <thead>
+                         <thead>
                             <tr>
                                 <th>Plaka</th>
                                 <th>Araç Sahibi</th>
-                                <th>Telefon</th>
+                                 <th>Telefon</th>
                                 <th>Tarih</th>
                                 <th>Saat</th>
-                                <th>İşlem</th>
+                                 <th>İşlem</th>
                                 <th>Park Yeri</th>
                                 <th>Ücret</th>
-                                <th>Durum</th>
+                                 <th>Durum</th>
                                 <?php if ($isAdmin): ?><th class="text-end">Aksiyonlar</th><?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (count($records) > 0): ?>
+                             <?php if (count($records) > 0): ?>
                                 <?php foreach ($records as $row): ?>
                                     <tr>
-                                        <td>
+                                         <td>
                                             <div class="tr-plate">
-                                                <div class="blue-strip">TR</div>
+                                                 <div class="blue-strip">TR</div>
                                                 <div class="plate-number"><?= htmlspecialchars($row['plate_number']) ?></div>
-                                            </div>
+                                             </div>
                                         </td>
                                         <td class="fw-semibold text-dark"><?= htmlspecialchars($row['owner_name']) ?></td>
-                                        <td class="text-muted small"><?= htmlspecialchars($row['phone']) ?></td>
+                                         <td class="text-muted small"><?= htmlspecialchars($row['phone']) ?></td>
                                         <td><i class="fa-regular fa-calendar text-muted me-1"></i> <?= $row['appointment_date'] ?></td>
-                                        <td><i class="fa-regular fa-clock text-muted me-1"></i> <?= substr($row['appointment_time'], 0, 5) ?></td>
+                                         <td><i class="fa-regular fa-clock text-muted me-1"></i> <?= substr($row['appointment_time'], 0, 5) ?></td>
                                         <td><span class="badge bg-light text-dark border fw-medium"><?= htmlspecialchars($row['process_type']) ?></span></td>
-                                        
+                                         
                                         <td><span class="badge bg-dark px-2 py-1 fw-bold" style="border-radius: 5px; background: #1e2229 !important;"><?= htmlspecialchars($row['slot_name'] ?? '-') ?></span></td>
                                         
                                         <td class="fw-bold text-dark">
-                                            <?php if (!empty($row['sub_end_date'])): ?>
+                                             <?php if (!empty($row['sub_end_date'])): ?>
                                                 <span class="text-danger fw-bold"><i class="fa-solid fa-crown me-1"></i>VIP</span>
-                                            <?php else: ?>
+                                             <?php else: ?>
                                                 <span><?= number_format($row['fee'], 2) ?> TL</span>
-                                            <?php endif; ?>
+                                             <?php endif; ?>
                                         </td>
-                                        
+                                         
                                         <td>
                                             <?php if($row['status'] == 'bekliyor'): ?>
                                                 <span class="badge-modern bg-waiting">Bekliyor</span>
                                             <?php elseif($row['status'] == 'içerde'): ?>
-                                                <span class="badge-modern bg-inside">İçerde</span>
+                                                    <span class="badge-modern bg-inside">İçerde</span>
                                             <?php else: ?>
-                                                <span class="badge-modern bg-success-modern">Çıkış Yaptı</span>
+                                                   <span class="badge-modern bg-success-modern">Çıkış Yaptı</span>
                                             <?php endif; ?>
                                         </td>
                                         
-                                        <?php if ($isAdmin): ?>
+                                         <?php if ($isAdmin): ?>
                                         <td class="text-end">
-                                            <div class="d-inline-flex gap-1">
+                                             <div class="d-inline-flex gap-1">
                                                 <?php if ($row['status'] == 'bekliyor'): ?>
-                                                    <a href="durum_guncelle.php?action=checkin&id=<?= $row['id'] ?>" class="btn btn-sm btn-success py-1 px-2" style="border-radius: 6px;" title="Giriş Yap"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                                     <a href="durum_guncelle.php?action=checkin&id=<?= $row['id'] ?>" class="btn btn-sm btn-success py-1 px-2" style="border-radius: 6px;"
+                                                       title="Giriş Yap"><i class="fa-solid fa-right-to-bracket"></i></a>
                                                 <?php elseif ($row['status'] == 'içerde'): ?>
-                                                    <a href="duzenle.php?id=<?= $row['id'] ?>&trigger=checkout" class="btn btn-sm btn-danger py-1 px-2" style="border-radius: 6px;" title="Çıkış Yap"><i class="fa-solid fa-right-from-bracket"></i></a>
+                                                     <a href="duzenle.php?id=<?= $row['id'] ?>&trigger=checkout" class="btn btn-sm btn-danger py-1 px-2" style="border-radius: 6px;"
+                                                       title="Çıkış Yap"><i class="fa-solid fa-right-from-bracket"></i></a>
                                                 <?php endif; ?>
-                                                <a href="duzenle.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-light border py-1 px-2" style="border-radius: 6px;" title="Düzenle"><i class="fa-solid fa-pen-to-square text-dark"></i></a>
-                                                <a href="sil.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-light border py-1 px-2" style="border-radius: 6px;" title="Sil" onclick="return confirm('Silmek istiyor musunuz?')"><i class="fa-solid fa-trash text-danger"></i></a>
+                                                <a href="duzenle.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-light border py-1 px-2" style="border-radius: 6px;"
+                                                   title="Düzenle"><i class="fa-solid fa-pen-to-square text-dark"></i></a>
+                                                <a href="sil.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-light border py-1 px-2" style="border-radius: 6px;"
+                                                   title="Sil" onclick="return confirm('Silmek istiyor musunuz?')"><i class="fa-solid fa-trash text-danger"></i></a>
                                             </div>
                                         </td>
-                                        <?php endif; ?>
+                                         <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="<?= $isAdmin ? 10 : 9 ?>" class="text-center py-5 text-muted">
-                                        <i class="fa-regular fa-folder-open d-block fs-3 mb-2 text-secondary"></i> Eşleşen kayıt bulunamadı.
-                                    </td>
+                                        <i class="fa-regular fa-folder-open d-block fs-3 mb-2 text-secondary"></i> Eşleşen kayıt bulunamadı.                                    </td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

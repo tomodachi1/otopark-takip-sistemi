@@ -13,6 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include 'db.php';
+
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $stmt = $db->prepare("SELECT * FROM parking_records WHERE id = :id");
 $stmt->execute(['id' => $id]);
@@ -23,6 +24,7 @@ if (!$record) {
 }
 
 $msg = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $plate_number = strtoupper(trim($_POST['plate_number']));
     $owner_name = trim($_POST['owner_name']);
@@ -32,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $process_type = isset($_POST['process_type']) ? trim($_POST['process_type']) : 'Sadece Otopark';
     $fee = $_POST['fee'];
     $status = $_POST['status'];
-    
+
     $check_stmt = $db->prepare("SELECT COUNT(*) FROM parking_records WHERE appointment_date = :adate AND appointment_time = :atime AND id != :id");
     $check_stmt->execute(['adate' => $appointment_date, 'atime' => $appointment_time, 'id' => $id]);
     
@@ -71,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>ParkMaster | Kaydı Düzenle</title>
+    <title>ParkHK | Kaydı Düzenle</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -173,9 +175,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h2 class="page-title mb-0 fw-bold"><i class="fa-solid fa-pen-to-square me-2 text-danger"></i>ParkMaster</h2>
+                <h2 class="page-title mb-0 fw-bold"><i class="fa-solid fa-pen-to-square me-2 text-danger"></i>Park<span style="color: #b91c1c;">HK</span></h2>
                 <span class="text-muted uppercase" style="font-size: 10px; letter-spacing: 1px; color: #94a3b8 !important;">KAYIT GÜNCELLEME PANELİ</span>
             </div>
+  
             <div>
                 <a href="index.php" class="btn btn-dark fw-semibold px-3 py-2 btn-modern" style="background: #272c35;">
                     <i class="fa-solid fa-arrow-left me-1 text-danger"></i> İptal / Geri Dön
@@ -199,7 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST">
                 <div class="row g-3">
                     
-                    <!-- Plaka -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Araç Plakası</label>
                         <div class="input-group">
@@ -208,7 +210,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- Araç Sahibi -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Araç Sahibi</label>
                         <div class="input-group">
@@ -217,7 +218,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- Telefon -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Telefon</label>
                         <div class="input-group">
@@ -226,7 +226,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- İşlem Türü -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Yapılan İşlem / Ek Hizmet</label>
                         <select id="process_type" name="process_type" class="form-select form-control-modern fw-semibold">
@@ -236,52 +235,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
 
-                    <!-- Randevu Tarihi -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Randevu Tarihi</label>
                         <input type="date" name="appointment_date" class="form-control form-control-modern" value="<?= $record['appointment_date'] ?>" required>
                     </div>
 
-                    <!-- Randevu Saati -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Randevu Saati</label>
                         <input type="time" name="appointment_time" class="form-control form-control-modern" value="<?= substr($record['appointment_time'],0,5) ?>" required>
                     </div>
 
-                    <!-- Çizgi Ayracı -->
                     <div class="col-12"><hr class="my-2" style="border-color: #e2e8f0;"></div>
 
-                    <!-- Giriş Tarihi (Readonly) -->
                     <div class="col-md-6">
                         <label class="form-label-custom text-muted">Giriş Tarihi (Sistem)</label>
                         <input type="date" id="entry_date" name="appointment_date" class="form-control form-control-modern" value="<?= $record['appointment_date'] ?>" readonly>
                     </div>
 
-                    <!-- Giriş Saati (Readonly) -->
                     <div class="col-md-6">
                         <label class="form-label-custom text-muted">Giriş Saati (Sistem)</label>
                         <input type="time" id="entry_time" name="appointment_time" class="form-control form-control-modern" value="<?= substr($record['appointment_time'],0,5) ?>" readonly>
                     </div>
 
-                    <!-- Çıkış Tarihi -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Çıkış Tarihi</label>
                         <input type="date" id="exit_date" name="exit_date" class="form-control form-control-modern" value="<?= $record['exit_date'] ?? '' ?>">
                     </div>
 
-                    <!-- Çıkış Saati -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Çıkış Saati</label>
                         <input type="time" id="exit_time" name="exit_time" class="form-control form-control-modern" value="<?= isset($record['exit_time']) ? substr($record['exit_time'],0,5) : '' ?>">
                     </div>
 
-                    <!-- Toplam Süre -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Toplam Süre</label>
                         <input type="text" id="stayed_duration" class="form-control form-control-modern fw-semibold" style="color: #475569 !important;" readonly placeholder="Araç henüz çıkış yapmadı">
                     </div>
 
-                    <!-- Toplam Ücret -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Hesaplanan Toplam Ücret (TL)</label>
                         <div class="input-group">
@@ -290,7 +280,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- Durum Seçeneği -->
                     <div class="col-md-12">
                         <label class="form-label-custom">Araç Park Durumu</label>
                         <select name="status" class="form-select form-control-modern fw-semibold">
@@ -300,7 +289,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
 
-                    <!-- Güncelleme Butonu -->
                     <div class="col-12 mt-4">
                         <button type="submit" class="btn btn-premium-red btn-modern w-100 fs-6 shadow-sm">
                             <i class="fa-solid fa-floppy-disk me-2"></i>Değişiklikleri Güncelle ve Kaydet
@@ -315,7 +303,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
 const HOURLY_RATE = 50.00;
-
 function checkURLTrigger() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('trigger') === 'checkout') {
@@ -337,12 +324,10 @@ function autoCalculateParking() {
     const exitDateVal = document.getElementById('exit_date').value;
     const exitTimeVal = document.getElementById('exit_time').value;
     const processTypeVal = document.getElementById('process_type').value;
-
     if (!entryDateVal || !entryTimeVal || !exitDateVal || !exitTimeVal) return;
 
     const entryDateTime = new Date(`${entryDateVal}T${entryTimeVal}`);
     const exitDateTime = new Date(`${exitDateVal}T${exitTimeVal}`);
-
     let timeDiff = exitDateTime - entryDateTime;
 
     if (timeDiff < 0) {
@@ -355,7 +340,6 @@ function autoCalculateParking() {
     let mins = totalMinutes % 60;
     
     document.getElementById('stayed_duration').value = `${hours} Saat ${mins} Dakika (${totalMinutes} Dk)`;
-
     let baseParkingFee = totalMinutes * (HOURLY_RATE / 60);
     
     let extraFee = 0.00;
@@ -372,12 +356,11 @@ function autoCalculateParking() {
 document.getElementById('exit_date').addEventListener('change', autoCalculateParking);
 document.getElementById('exit_time').addEventListener('change', autoCalculateParking);
 document.getElementById('process_type').addEventListener('change', autoCalculateParking);
-
 window.addEventListener('DOMContentLoaded', () => {
     checkURLTrigger(); 
     autoCalculateParking(); 
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

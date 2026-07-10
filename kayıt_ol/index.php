@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ParkMaster - Giriş Portal</title>
+    <title>ParkHK - Giriş Portal</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
@@ -14,7 +14,7 @@
 
     <style>
         :root {
-            --bg-dark: #1a1c23; 
+            --bg-dark: #1a1c23;
             --bg-gradient-end: #111216;
             --card-bg: #22252f;
             --primary-red: #ff2a3b; 
@@ -83,7 +83,6 @@
             margin-bottom: 22px;
         }
 
-        /* Sol taraftaki sabit kilit/kullanıcı ikonları */
         .input-group-custom > i:not(.password-toggle) {
             position: absolute;
             left: 16px;
@@ -94,7 +93,6 @@
             z-index: 10;
         }
 
-        /* Yeni Eklenen: Sağ taraftaki tıklanabilir Göz İkonu */
         .input-group-custom .password-toggle {
             position: absolute;
             right: 16px;
@@ -115,7 +113,7 @@
             background-color: #16181f !important;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            padding: 14px 45px 14px 45px; /* Sağ ve soldan ikon payı bırakıldı */
+            padding: 14px 45px 14px 45px;
             color: var(--text-light) !important;
             font-size: 15px;
             transition: all 0.3s ease;
@@ -193,7 +191,7 @@
         
         <!-- Logo -->
         <div class="brand-logo">
-            <i class="fa-solid fa-square-p text-danger me-2"></i>Park<span>Master</span>
+            <i class="fa-solid fa-square-p text-danger me-2"></i>Park<span>HK</span>
         </div>
 
         <!-- PHP Bildirimleri -->
@@ -223,7 +221,6 @@
                     <div class="input-group-custom">
                         <input type="password" name="password" id="login-pass" class="form-control-custom" placeholder="••••••••" required>
                         <i class="fa-solid fa-lock"></i>
-                        <!-- Tıklanabilir Göz -->
                         <i class="fa-solid fa-eye password-toggle" onclick="togglePasswordVisibility('login-pass', this)"></i>
                     </div>
                 </div>
@@ -260,7 +257,6 @@
                     <div class="input-group-custom">
                         <input type="password" name="password" id="register-pass" class="form-control-custom" placeholder="Güçlü bir şifre seç" required>
                         <i class="fa-solid fa-lock"></i>
-                        <!-- Tıklanabilir Göz -->
                         <i class="fa-solid fa-eye password-toggle" onclick="togglePasswordVisibility('register-pass', this)"></i>
                     </div>
                 </div>
@@ -299,7 +295,6 @@
 </div>
 
 <script>
-    // Formlar arası geçiş mantığı
     function switchForm(targetId) {
         document.querySelectorAll('.form-section').forEach(form => {
             form.classList.remove('active');
@@ -309,10 +304,8 @@
         alerts.forEach(alert => alert.style.display = 'none');
     }
 
-    // Yeni Eklenen: Şifre göster / gizle fonksiyonu
     function togglePasswordVisibility(inputId, iconElement) {
         const passwordInput = document.getElementById(inputId);
-        
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             iconElement.classList.remove('fa-eye');

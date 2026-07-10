@@ -8,7 +8,6 @@ require_once 'db.php';
 $user_id = $_SESSION['user_id'];
 $mesaj = "";
 $hata = "";
-
 $check = $db->prepare("SELECT * FROM subscriptions WHERE user_id = ? AND end_date >= CURDATE() AND status = 'aktif'");
 $check->execute([$user_id]);
 $current_sub = $check->fetch();
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buy_subscription'])) 
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>ParkMaster Premium | Abonelik Merkezi</title>
+    <title>ParkHK Premium | Abonelik Merkezi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -69,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buy_subscription'])) 
             box-shadow: 0 10px 25px rgba(255, 42, 59, 0.1);
         }
         .card-badge {
-            position: absolute; top: 15px; right: -35px;
+            position: absolute;
+            top: 15px; right: -35px;
             background: var(--primary-red); color: #fff;
             padding: 4px 40px; font-size: 11px; font-weight: 700;
             transform: rotate(45deg); text-transform: uppercase;
@@ -78,14 +78,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buy_subscription'])) 
             background: linear-gradient(90deg, var(--primary-red), #e01223);
             border: none; color: white;
             padding: 16px; font-weight: 700; border-radius: 12px;
-            transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(255, 42, 59, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 42, 59, 0.25);
         }
         .btn-premium-action:hover {
             background: linear-gradient(90deg, #e01223, var(--hover-red));
             box-shadow: 0 8px 20px rgba(255, 42, 59, 0.35);
         }
         .btn-outline-custom {
-            border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
             border-radius: 10px; font-weight: 600; transition: all 0.2s; background: rgba(255,255,255,0.03);
         }
         .btn-outline-custom:hover { background: rgba(255,255,255,0.08); color: #fff; }
@@ -100,14 +102,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buy_subscription'])) 
 <div class="container py-5" style="max-width: 950px;">
     
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <span class="badge px-3 py-2 rounded-pill mb-2" style="background: rgba(255, 42, 59, 0.1); color: var(--primary-red) !important; font-weight: 600;">👑 PREMIUM MEMBERSHIP</span>
-            <h2 class="fw-bold m-0 text-white">ParkMaster <span style="color: var(--primary-red);">Pass</span></h2>
-        </div>
-        <a href="../otopark/index.php" class="btn btn-outline-custom btn-sm px-3 py-2">
-            <i class="fa-solid fa-arrow-left me-2"></i>Panale Dön
-        </a>
+    <div>
+        <span class="badge px-3 py-2 rounded-pill mb-2" style="background: rgba(255, 42, 59, 0.1); color: var(--primary-red) !important; font-weight: 600;">👑 PREMIUM MEMBERSHIP</span>
+        <h2 class="fw-bold m-0" style="color: #ffffff;">Park<span style="color: var(--primary-red);">HK</span> <span style="color: var(--primary-red); font-weight: 300; font-size: 20px; margin-left: 5px;">Pass</span></h2>
     </div>
+    <a href="../otopark/index.php" class="btn btn-outline-custom btn-sm px-3 py-2">
+        <i class="fa-solid fa-arrow-left me-2"></i>Panele Dön
+    </a>
+</div>
 
     <?php if(!empty($mesaj)): ?>
         <div class="alert alert-success border-0 bg-success bg-opacity-20 text-white p-3 rounded-3 mb-4"><?= $mesaj ?></div>
@@ -137,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buy_subscription'])) 
                             <span class="small text-white">Son: <?= date('d.m.Y', strtotime($current_sub['end_date'])) ?></span>
                         </div>
                     <?php else: ?>
-                        <span class="badge px-3 py-2 rounded-3 bg-danger bg-opacity-10 text-danger border border-danger border-opacity-10fw-semibold">
+                        <span class="badge px-3 py-2 rounded-3 bg-danger bg-opacity-10 text-danger border border-danger border-opacity-10 fw-semibold">
                             Aktif Abonelik Bulunmuyor
                         </span>
                     <?php endif; ?>
@@ -152,7 +154,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buy_subscription'])) 
 
             <form method="POST">
                 <div class="row g-4 justify-content-center">
-                    
                     <!-- Aylık Paket -->
                     <div class="col-md-6">
                         <div class="card pricing-card p-4 h-100 selected-active" id="card_aylik" onclick="selectPremiumPlan('aylik')">
@@ -194,6 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buy_subscription'])) 
                 </div>
             </form>
         <?php endif; ?>
+
     </div>
 </div>
 

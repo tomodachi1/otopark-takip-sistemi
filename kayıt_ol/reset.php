@@ -5,7 +5,6 @@ $mesaj = "";
 $hata = "";
 $token_gecerli = false;
 $user_id = null;
-
 if (isset($_GET['token']) && !empty($_GET['token'])) {
     $token = $_GET['token'];
     $query = $db->prepare("SELECT id, reset_expires FROM users WHERE reset_token = ?");
@@ -27,7 +26,6 @@ if (isset($_POST['reset_pass'])) {
     $new_pass = $_POST['password'];
     $new_pass_retry = $_POST['password_retry'];
     $user_id_post = $_POST['user_id'];
-    
     if (!empty($new_pass) && !empty($new_pass_retry)) {
         if ($new_pass === $new_pass_retry) {
             $hashed_pass = password_hash($new_pass, PASSWORD_DEFAULT);
@@ -55,7 +53,7 @@ if (isset($_POST['reset_pass'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ParkMaster - Yeni Şifre Belirle</title>
+    <title>ParkHK - Yeni Şifre Belirle</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -94,9 +92,11 @@ if (isset($_POST['reset_pass'])) {
         .input-group-custom { position: relative; margin-bottom: 22px; }
         .input-group-custom i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
         .form-control-custom {
-            width: 100%; background-color: rgba(0, 0, 0, 0.4) !important;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.4) !important;
             border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;
-            padding: 14px 16px 14px 45px; color: var(--text-light) !important;
+            padding: 14px 16px 14px 45px;
+            color: var(--text-light) !important;
             font-size: 15px; transition: all 0.3s ease;
         }
         .form-control-custom:focus { outline: none; border-color: var(--primary-red); box-shadow: 0 0 12px rgba(230, 30, 42, 0.3); }

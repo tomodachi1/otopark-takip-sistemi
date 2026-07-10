@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $slot_name = isset($_POST['slot_name']) ? trim($_POST['slot_name']) : ''; 
     
     $fee = ($process_type === 'Sadece Otopark') ? 100.00 : 250.00;
-    
+
     if (!empty($plate_number) && !empty($owner_name) && !empty($appointment_date) && !empty($appointment_time) && !empty($slot_name)) {
         try {
             // Seçilen yerin o tarihte/saatte içeride olup olmadığını ana tablodaki slot_name ile sorgula
@@ -75,7 +75,7 @@ try {
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>ParkMaster | Yeni Randevu Ekle</title>
+    <title>ParkHK | Yeni Randevu Ekle</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -216,9 +216,10 @@ try {
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h2 class="page-title mb-0 fw-bold"><i class="fa-solid fa-square-parking me-2 text-danger"></i>ParkMaster</h2>
+                <h2 class="page-title mb-0 fw-bold"><i class="fa-solid fa-square-parking me-2 text-danger"></i>Park<span style="color: #b91c1c;">HK</span></h2>
                 <span class="text-muted uppercase" style="font-size: 10px; letter-spacing: 1px; color: #94a3b8 !important;">YENİ RANDEVU KAYDI</span>
             </div>
+    
             <div>
                 <a href="index.php" class="btn btn-dark fw-semibold px-3 py-2 btn-modern" style="background: #272c35;">
                     <i class="fa-solid fa-arrow-left me-1 text-danger"></i> Yönetim Paneli
@@ -239,29 +240,25 @@ try {
         
         <div class="card-body p-4">
             <form method="POST" action="">
-                <!-- 👑 GİZLİ INPUT: Seçilen kutunun ismini (slot_name) taşır -->
+                
                 <input type="hidden" name="slot_name" id="selected_slot_name" value="" required>
 
                 <div class="row g-3">
-                    <!-- Plaka -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Araç Plakası <span class="text-danger">*</span></label>
                         <input type="text" name="plate_number" class="form-control form-control-modern w-100" placeholder="Örn: 34ABC123" required autocomplete="off">
                     </div>
 
-                    <!-- Müşteri Adı -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Müşteri Adı Soyadı <span class="text-danger">*</span></label>
                         <input type="text" name="owner_name" class="form-control form-control-modern w-100" placeholder="Ahmet Yılmaz" required autocomplete="off">
                     </div>
 
-                    <!-- Telefon -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Telefon Numarası</label>
                         <input type="tel" name="phone" class="form-control form-control-modern w-100" placeholder="0555 555 5555" autocomplete="off">
                     </div>
 
-                    <!-- Hizmet -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Talep Edilen Hizmet</label>
                         <select name="process_type" class="form-select form-control-modern">
@@ -270,19 +267,16 @@ try {
                         </select>
                     </div>
 
-                    <!-- Tarih -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Giriş Tarihi <span class="text-danger">*</span></label>
                         <input type="date" name="appointment_date" class="form-control form-control-modern w-100" value="<?= date('Y-m-d') ?>" required>
                     </div>
 
-                    <!-- Saat -->
                     <div class="col-md-6">
                         <label class="form-label-custom">Giriş Saati <span class="text-danger">*</span></label>
                         <input type="time" name="appointment_time" class="form-control form-control-modern w-100" value="<?= date('H:i') ?>" required>
                     </div>
 
-                    <!-- 👑 GÖRSEL PARK YERLERİ SEÇİMİ -->
                     <div class="col-12 mt-4">
                         <label class="form-label-custom d-block mb-2">Boş Park Yerini Tıklayarak Seçin <span class="text-danger">*</span></label>
                         <div class="parking-grid">
@@ -297,7 +291,6 @@ try {
                         </div>
                     </div>
 
-                    <!-- Gönderim Butonu -->
                     <div class="col-12 mt-4">
                         <button type="submit" class="btn btn-premium-red btn-modern w-100 fs-6">
                             <i class="fa-solid fa-square-plus me-2"></i>Randevuyu Kaydet ve Listeye Ekle
